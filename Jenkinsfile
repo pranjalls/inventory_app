@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-username/inventory-app.git'
+                git 'https://github.com/pranjalls/inventory-app.git'
             }
         }
         stage('Install') {
