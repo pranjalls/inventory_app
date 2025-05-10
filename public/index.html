@@ -7,10 +7,64 @@
         body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; padding: 50px; }
         h1 { color: #333; }
         p { font-size: 1.2em; }
+        #time { font-weight: bold; margin-top: 10px; }
+        #message { margin: 20px 0; font-style: italic; color: #555; }
+        #product-list { margin-top: 20px; }
+        ul { list-style-type: none; padding: 0; }
+        li { background: #fff; margin: 5px auto; padding: 10px; width: 200px; border-radius: 5px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+        button { padding: 10px 20px; margin: 10px; border: none; background-color: #007BFF; color: white; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
     </style>
 </head>
 <body>
     <h1>Welcome to the Inventory App</h1>
     <p>This is the home page of your sample inventory management application.</p>
+
+    <div id="time">Current time: --:--:--</div>
+
+    <div id="message">Click below for a motivational boost!</div>
+    <button onclick="showMessage()">Show Motivational Message</button>
+
+    <div id="product-list">
+        <h2>Product List</h2>
+        <ul id="products">
+            <li>Sample Item 1</li>
+            <li>Sample Item 2</li>
+        </ul>
+        <button onclick="addProduct()">Add New Item</button>
+    </div>
+
+    <script>
+        // Live time updater
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('time').innerText = 'Current time: ' + now.toLocaleTimeString();
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Motivational messages
+        const messages = [
+            "You're doing great, keep going!",
+            "Small steps lead to big achievements!",
+            "Every expert was once a beginner.",
+            "Success is built on persistence.",
+            "Believe in yourself and your work!"
+        ];
+        function showMessage() {
+            const random = messages[Math.floor(Math.random() * messages.length)];
+            document.getElementById('message').innerText = random;
+        }
+
+        // Add new product
+        function addProduct() {
+            const product = prompt("Enter the name of the new product:");
+            if (product) {
+                const li = document.createElement('li');
+                li.textContent = product;
+                document.getElementById('products').appendChild(li);
+            }
+        }
+    </script>
 </body>
 </html>
