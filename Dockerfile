@@ -1,18 +1,20 @@
-# Use Node.js official image
+# Use official Node.js image (LTS version recommended)
 FROM node:18
 
-# Set app directory
+# Set working directory inside the container
 WORKDIR /usr/src/app
 
-# Install app dependencies
+# Copy only package.json and package-lock.json first (for better caching)
 COPY package*.json ./
-RUN npm install
 
-# Bundle app source
+# Install dependencies
+RUN npm install --production
+
+# Copy the rest of the application code
 COPY . .
 
-# Expose port
+# Expose the port the app runs on
 EXPOSE 3000
 
-# Run app
+# Start the app
 CMD [ "npm", "start" ]
