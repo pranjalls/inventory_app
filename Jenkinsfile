@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = "inventory-app:latest"
+        CONTAINER_NAME = "inventory-app"
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -22,23 +27,33 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build --no-cache -t inventory-app:latest .'
+                sh "docker build --no-cache -t ${DOCKER_IMAGE} ."
             }
         }
 
         stage('Stop Old Container') {
             steps {
                 script {
-                    sh 'docker stop inventory-app || true'
-                    sh 'docker rm inventory-app || true'
+                    // Stop and remove existing container if running
+                    sh "docker stop ${CONTAINER_NAME} || true"
+                    sh "docker rm ${CONTAINER_NAME} || true"
                 }
             }
         }
 
         stage('Run New Container') {
             steps {
-                sh 'docker run -d --name inventory-app -p 3000:3000 inventory-app:latest'
+                sh "docker run -d --name ${CONTAINER_NAME} -p 3000:3000 ${DOCKER_IMAGE}"
             }
+        }
+    }
+
+    post {
+        failure {
+            echo '❌ Build failed. Check logs for details.'
+        }
+        success {
+            echo '✅ Build and deployment completed successfully.'
         }
     }
 }
