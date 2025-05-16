@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/pranjalls/inventory-app.git'
+                git credentialsId: 'github-creds', url: 'https://github.com/pranjalls/inventory-app.git'
             }
         }
 
@@ -29,7 +29,6 @@ pipeline {
         stage('Stop Old Container') {
             steps {
                 script {
-                    // Stop and remove existing container if running
                     sh 'docker stop inventory-app || true'
                     sh 'docker rm inventory-app || true'
                 }
